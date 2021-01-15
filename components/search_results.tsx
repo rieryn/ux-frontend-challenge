@@ -1,26 +1,16 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import useSWR from "swr";
 import {MovieContext} from "./movie_context";
 
 
-class SearchResults extends React.Component<{}, { value: string }> {
-    constructor(props: {} | Readonly<{}>) {
-        super(props);
-        this.state = {
-            value: ""
-        };
-    }
+export default function SearchResults(props) {
+    const search  = useContext(MovieContext);
+    return (
+        <div>
+            result child {props.Title} tt             {props.Released}
 
-    render() {
-        return (
-            <MovieContext.Consumer>
-                {(context:any) => (
-                    <p>test {context.state.message}</p>
-
-    )}
-        </MovieContext.Consumer>
+        </div>
     );
-    }
+
 }
 
-export default SearchResults;

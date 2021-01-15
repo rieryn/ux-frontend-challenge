@@ -1,26 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import useSWR from "swr";
 import {MovieContext} from "./movie_context";
 
 
-class Nominations extends React.Component<{}, { value: string }> {
-    constructor(props: {} | Readonly<{}>) {
-        super(props);
-        this.state = {
-            value: ""
-        };
-    }
+export default function Nominations() {
+    const state = useContext(MovieContext);
+    return (
+        <div>
+            nomination child1 {state.url}
+        </div>
+    );
 
-    render() {
-        return (
-            <MovieContext.Consumer>
-                {(context:any) => (
-                    <p>test {context.state.message}</p>
-
-                )}
-            </MovieContext.Consumer>
-        );
-    }
 }
-
-export default Nominations;
