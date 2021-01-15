@@ -6,13 +6,32 @@ import {
     CardContent,
     Typography,
     CardHeader,
-    GridListTile, IconButton, GridListTileBar
+    GridListTile, IconButton, GridListTileBar, CardActionArea
 } from '@material-ui/core/';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import {MovieContext} from "./movie_context";
 import {height} from "@material-ui/system";
-
+const useStyles = makeStyles(() => ({
+    actionArea: {
+        borderRadius: 16,
+        transition: '0.3s',
+        '&:hover': {
+            transform: 'scale(1.2)',
+        },
+    },
+    card: {
+        minWidth: 256,
+        borderRadius: 16,
+        boxShadow: 'none',
+        '&:hover': {
+            boxShadow: `0 6px 12px 0 rgba(204, 236, 187, 1)
+                .rotate(-12)
+                .darken(0.2)
+                .fade(0.5)}`,
+        },
+    },
+}));
 const DEFAULT_PLACEHOLDER_IMAGE =
     "https://via.placeholder.com/800x600?text=image+not+found";
 interface movieInterface {
@@ -23,6 +42,7 @@ interface movieInterface {
 }
 // @ts-ignore
 export default function Movie ({ movie }) {
+    const classes = useStyles();
     // @ts-ignore
     const { nomctx } = useContext(MovieContext);
     const [nominations, setNominations] = nomctx;
@@ -30,8 +50,9 @@ export default function Movie ({ movie }) {
         movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
     return (
 
-        <GridListTile key={movie.imdbID} style = {{height: '25vw', padding: 15}}>
-            <Card style = {{height: '25vw'}}>
+        <GridListTile key={movie.imdbID} style = {{ padding: 15, flexWrap: "nowrap"}} >
+            <CardActionArea className={classes.actionArea}>
+                <Card style = {{height: '25vw'}}>
 
             <img src={poster} alt={movie.Title} />
             <GridListTileBar
@@ -46,12 +67,14 @@ export default function Movie ({ movie }) {
                     </IconButton> :
                     <IconButton aria-label= "info"
                                 color="secondary"
-                                onClick={() => {setNominations((nominations: [movieInterface]) => [...nominations, movie])  }}>
+                                onClick={() => {if (nominations.length<5) setNominations((nominations: [movieInterface]) => [...nominations, movie])  }}>
                         <FavoriteBorderIcon />
                     </IconButton>
                 }/>
             </Card>
+        </CardActionArea>
 
         </GridListTile>
+
     );
 };
