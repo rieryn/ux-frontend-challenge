@@ -12,9 +12,8 @@ import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert, { AlertProps } from '@material-ui/lab/Alert';
 import ListItemText from "@material-ui/core/ListItemText";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
@@ -57,10 +56,16 @@ export const MovieContext = React.createContext();
 export function MovieProvider({ children }) {
     const [search, setSearch] = useState("frozen");
     const [nominations, setNominations] = useState([]);
+    const [open, setOpen] = React.useState(false);
 
+    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+    };
 
     const fetcher = (url: RequestInfo) => fetch(url).then((res) => res.json());
-    const { data, error, mutate } = useSWR('http://www.omdbapi.com/?apikey=60b1118c&s='+search, fetcher);
+    const { data, error, mutate } = useSWR('https://www.omdbapi.com/?apikey=60b1118c&s='+search, fetcher);
     const classes = useStyles();
     if (error) return <h1>Something went wrong!</h1>
     return (
@@ -73,6 +78,7 @@ export function MovieProvider({ children }) {
                 </Toolbar>
 
             </AppBar>
+
             <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -97,6 +103,12 @@ export function MovieProvider({ children }) {
                     ))}
                 </List>
             </Drawer>
+
+                <Snackbar open={(nominations.length >= 5)} onClose={handleClose}>
+                    <Alert severity="success">
+                        So many nominations! <a href="https://github.com/rieryn">hire me</a>
+                    </Alert>
+                </Snackbar>
             {(!data)? <p>Loading</p>:
             (data["Error"])?  data["Error"]:
                 <GridList cols={3} style={{padding: 15}}>
