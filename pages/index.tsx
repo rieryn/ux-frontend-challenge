@@ -14,8 +14,7 @@ export default function Home() {
 
       <main className={styles.main}>
           <MovieProvider>
-              <SearchBar/>
-              <SearchResults/>
+
           </MovieProvider>
 
       </main>

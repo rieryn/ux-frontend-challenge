@@ -14,3 +14,16 @@ a {
 * {
   box-sizing: border-box;
 }
+img {
+  object-fit: fill;
+
+}
+
+Card{
+  height: 200px;
+}
+
+Movie{
+  height: 200px;
+
+}
