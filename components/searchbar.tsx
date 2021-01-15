@@ -90,10 +90,11 @@ const mockMovie = {
 
 function SearchBar () {
     const classes = useStyles();
+    // @ts-ignore
     const { searchctx } = useContext(MovieContext);
     const [search, setSearch] = searchctx;
     const [input, setInput] = useState('');
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         setSearch(input);
     }
