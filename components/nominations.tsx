@@ -7,7 +7,6 @@ export default function Nominations() {
     const state = useContext(MovieContext);
     return (
         <div>
-            nomination child1 {state.url}
         </div>
     );
 

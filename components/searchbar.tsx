@@ -90,7 +90,6 @@ const mockMovie = {
 
 function SearchBar () {
     const classes = useStyles();
-
     const { searchctx } = useContext(MovieContext);
     const [search, setSearch] = searchctx;
     const [input, setInput] = useState('');
@@ -106,7 +105,7 @@ function SearchBar () {
             </div>
 
             <InputBase
-                placeholder="Search…"
+                placeholder="Search movie title…"
                 onChange={e => setInput(e.target.value)}
                 classes={{
                     root: classes.inputRoot,

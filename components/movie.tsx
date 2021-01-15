@@ -15,9 +15,15 @@ import {height} from "@material-ui/system";
 
 const DEFAULT_PLACEHOLDER_IMAGE =
     "https://via.placeholder.com/800x600?text=image+not+found";
-
-
+interface movieInterface {
+    Title: string,
+    Year: string,
+    imdbID: string,
+    Poster: string
+}
+// @ts-ignore
 export default function Movie ({ movie }) {
+    // @ts-ignore
     const { nomctx } = useContext(MovieContext);
     const [nominations, setNominations] = nomctx;
     const poster =
@@ -32,18 +38,19 @@ export default function Movie ({ movie }) {
                 style={{ color: '#FFFFFF',}}
                 title={movie.Title}
                 subtitle={<span>{movie.Year}</span>}
-                actionIcon = { nominations.some(item => item.imdbID === movie.imdbID)?
+                // @ts-ignore
+                actionIcon = { nominations.some((item)  => item.imdbID === movie.imdbID)?
                     <IconButton aria-label= "info"
                                 color="secondary">
                         <FavoriteIcon />
                     </IconButton> :
                     <IconButton aria-label= "info"
                                 color="secondary"
-                                onClick={() => {setNominations(nominations => [...nominations, movie])  }}>
+                                onClick={() => {setNominations((nominations: [movieInterface]) => [...nominations, movie])  }}>
                         <FavoriteBorderIcon />
                     </IconButton>
-                }
-            />        </Card>
+                }/>
+            </Card>
 
         </GridListTile>
     );

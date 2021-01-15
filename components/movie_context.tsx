@@ -43,11 +43,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
-interface MovieContextInterface {
-    title: string,
-    releaseYear: string,
-    imdb: string,
-    loading: boolean
+interface movieInterface {
+    Title: string,
+    Year: string,
+    imdbID: string,
+    Poster: string
 }
 // @ts-ignore
 export const MovieContext = React.createContext();
@@ -59,8 +59,8 @@ export function MovieProvider({ children }) {
     const [nominations, setNominations] = useState([]);
 
 
-    const fetcher = (url) => fetch(url).then((res) => res.json());
-    const { data, error, mutate } = useSWR('http://www.omdbapi.com/?apikey=xxx&s='+search, fetcher);
+    const fetcher = (url: RequestInfo) => fetch(url).then((res) => res.json());
+    const { data, error, mutate } = useSWR('http://www.omdbapi.com/?apikey=60b1118c&s='+search, fetcher);
     const classes = useStyles();
     if (error) return <h1>Something went wrong!</h1>
     return (
@@ -89,27 +89,18 @@ export function MovieProvider({ children }) {
                 </Container>
                 <Divider />
                 <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
+                    {nominations.map((movie: movieInterface) => (
+                        <ListItem button key={movie.imdbID}>
+                            <ListItemText primary={movie.Title} />
                         </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
+
                     ))}
                 </List>
             </Drawer>
             {(!data)? <p>Loading</p>:
             (data["Error"])?  data["Error"]:
                 <GridList cols={3} style={{padding: 15}}>
-                    {data.Search.map((movie) => (
+                    {data.Search.map((movie: movieInterface) => (
                         <Movie key={movie.imdbID} movie={movie}/>
 
                     ))}

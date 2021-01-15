@@ -3,12 +3,10 @@ import useSWR from "swr";
 import {MovieContext} from "./movie_context";
 
 
-export default function SearchResults(props) {
+export default function SearchResults() {
     const search  = useContext(MovieContext);
     return (
         <div>
-            result child {props.Title} tt             {props.Released}
-
         </div>
     );
 
