@@ -55,6 +55,8 @@ export default function Movie ({ movie }) {
                 <Card style = {{height: '25vw'}}>
 
             <img src={poster} alt={movie.Title} />
+                </Card>
+            </CardActionArea>
             <GridListTileBar
                 style={{ color: '#FFFFFF',}}
                 title={movie.Title}
@@ -71,8 +73,7 @@ export default function Movie ({ movie }) {
                         <FavoriteBorderIcon />
                     </IconButton>
                 }/>
-            </Card>
-        </CardActionArea>
+
 
         </GridListTile>
 
