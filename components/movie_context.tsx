@@ -110,7 +110,7 @@ export function MovieProvider({ children }) {
                         <ListItem button key={movie.imdbID}>
                             <ListItemText primary={movie.Title} />
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => { setNominations(nominations.filter(item => item.imdbID !== movie.imdbID))}}>
+                                <IconButton edge="end" aria-label="delete" onClick={() => { setNominations(nominations.filter((item: any) => item.imdbID !== movie.imdbID))}}>
                                     <ClearIcon />
                                 </IconButton>
                             </ListItemSecondaryAction>
