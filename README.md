@@ -12,7 +12,7 @@ refactor
 
 pagination
 
-~~localstorage
+~~localstorage~~
 
 flip cards
 
