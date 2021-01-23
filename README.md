@@ -8,9 +8,11 @@ I wanted to learn it AND! it's really nice to use
 
 todo:
 
+refactor
+
 pagination
 
-localstorage
+~~localstorage
 
 flip cards
 
