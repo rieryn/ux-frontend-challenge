@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import useSWR from "swr";
 import SearchResults from "./search_results";
 import Movie from "./movie";
 import {Box, Container, Grid, GridList, GridListTile} from "@material-ui/core/";
-import PermanentDrawerLeft from "./left";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -13,7 +12,7 @@ import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Snackbar from '@material-ui/core/Snackbar';
-import Alert, { AlertProps } from '@material-ui/lab/Alert';
+import Alert, {AlertProps} from '@material-ui/lab/Alert';
 import ListItemText from "@material-ui/core/ListItemText";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
@@ -29,6 +28,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {filter} from "domutils";
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -38,12 +38,12 @@ const useStyles = makeStyles((theme: Theme) =>
             width: `calc(100% )`,
             marginLeft: 0,
             backgroundColor: "rgba(35, 149, 63, 0.67)",
-            backdropFilter: "blur(3px)",},
+            backdropFilter: "blur(3px)",
+        },
         drawer: {
             flexShrink: 0,
         },
-        drawerPaper: {
-        },
+        drawerPaper: {},
         // necessary for content to be below app bar
         toolbar: theme.mixins.toolbar,
         content: {
@@ -53,18 +53,20 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
+
 interface movieInterface {
     Title: string,
     Year: string,
     imdbID: string,
     Poster: string
 }
+
 // @ts-ignore
 export const MovieContext = React.createContext();
 
 
 // @ts-ignore
-export function MovieProvider({ children }) {
+export function MovieProvider({children}) {
     const [search, setSearch] = useState("frozen");
     const [nominations, setNominations] = useState([]);
     const [open, setOpen] = React.useState(false);
@@ -76,18 +78,18 @@ export function MovieProvider({ children }) {
     };
 
     const fetcher = (url: RequestInfo) => fetch(url).then((res) => res.json());
-    const { data, error, mutate } = useSWR('https://www.omdbapi.com/?apikey=60b1118c&s='+search, fetcher);
+    const {data, error, mutate} = useSWR('https://www.omdbapi.com/?apikey=60b1118c&s=' + search, fetcher);
     const classes = useStyles();
-    if (error) return <h1>Something went wrong!</h1>
+    useEffect(() => {
+        setNominations(JSON.parse(localStorage.getItem("nominations") || '[]'))
+    }, [])
     return (
-
         <MovieContext.Provider value={{searchctx: [search, setSearch], nomctx: [nominations, setNominations]}}>
-            <AppBar position="fixed" className={classes.appBar} >
+            <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
-                <SearchBar/>
-                <h2>OMDB Search</h2>
+                    <SearchBar/>
+                    <h2>OMDB Search</h2>
                 </Toolbar>
-
             </AppBar>
 
             <Drawer
@@ -98,46 +100,56 @@ export function MovieProvider({ children }) {
                 }}
                 anchor="right"
             >
-                <div className={classes.toolbar} />
+                <div className={classes.toolbar}/>
                 <Container>
-                <Typography variant="h6" noWrap>
-                    Nominations
-                </Typography>
+                    <Typography variant="h6" noWrap>
+                        Nominations
+                    </Typography>
                 </Container>
-                <Divider />
+                <Divider/>
                 <List>
                     {nominations.map((movie: movieInterface) => (
                         <ListItem button key={movie.imdbID}>
-                            <ListItemText primary={movie.Title} />
+                            <ListItemText primary={movie.Title}/>
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => { setNominations(nominations.filter((item: any) => item.imdbID !== movie.imdbID))}}>
-                                    <ClearIcon />
+                                <IconButton
+                                    edge="end"
+                                    aria-label="delete"
+                                    onClick={() => {
+                                        const newNominations = [...nominations];
+                                        setNominations(
+                                        nominations.filter((item: any) => item.imdbID !== movie.imdbID))
+                                        localStorage.setItem("nominations", JSON.stringify(
+                                            newNominations.filter((item: any) => item.imdbID !== movie.imdbID)
+                                        ));
+                                    }}>
+                                    <ClearIcon/>
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>
-
                     ))}
                 </List>
             </Drawer>
 
-                <Snackbar open={(nominations.length >= 5)} onClose={handleClose}>
-                    <Alert severity="success">
-                        {nominations.length} nominations! You're done... <a href="https://github.com/rieryn"><i>hire me</i></a>
-                    </Alert>
-                </Snackbar>
+            <Snackbar open={(nominations.length >= 5)} onClose={handleClose}>
+                <Alert severity="success">
+                    {nominations.length} nominations! You're done...
+                    <a href="https://github.com/rieryn"><i>hire me</i></a>
+                </Alert>
+            </Snackbar>
+            {(error) ? <h1>Something went wrong!</h1> :
+
             <Box component="span" m={2}>
-            {(!data)? <p>Loading</p>:
-            (data["Error"])?  data["Error"]:
-                <GridList cols={0} style={{padding: 25} } spacing ={0} >
-                    {data.Search.map((movie: movieInterface) => (
-                        <Movie key={movie.imdbID} movie={movie}/>
-
-                    ))}
-                </GridList>
-            }
+                {(!data) ? <p>Loading</p> :
+                    (data["Error"]) ? data["Error"] :
+                        <GridList cols={0} style={{padding: 25}} spacing={0}>
+                            {data.Search.map((movie: movieInterface) => (
+                                <Movie key={movie.imdbID} movie={movie}/>
+                            ))}
+                        </GridList>
+                }
             </Box>
-
-
+            }
         </MovieContext.Provider>
     );
 }

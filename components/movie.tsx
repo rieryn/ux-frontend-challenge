@@ -69,12 +69,19 @@ export default function Movie ({ movie }) {
                     </IconButton> :
                     <IconButton aria-label= "info"
                                 color="secondary"
-                                onClick={() => {if (nominations.length<5) setNominations((nominations: [movieInterface]) => [...nominations, movie])  }}>
+                                onClick={() => {
+                                    // double dip here because setstate is async
+                                    if (nominations.length < 5) {
+                                        const newNominations = [...nominations];
+                                        newNominations.push(movie);
+                                        setNominations(
+                                            (nominations: [movieInterface]) => [...nominations, movie])
+                                        localStorage.setItem("nominations", JSON.stringify(newNominations));
+                                    }
+                                }}>
                         <FavoriteBorderIcon />
                     </IconButton>
                 }/>
-
-
         </GridListTile>
 
     );
