@@ -2,9 +2,7 @@
 
 [ Demo Website]( https://shoppies.rieryn.vercel.app/)
 
-Why next.js?
-
-I wanted to learn it AND! it's really nice to use
+Reusing summer project, will make some improvements
 
 todo:
 
@@ -12,9 +10,9 @@ refactor
 
 pagination
 
-~~localstorage~~
-
 flip cards
+
+banner 
 
 responsiveness for mobile
 
