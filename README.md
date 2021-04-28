@@ -8,6 +8,8 @@ todo:
 
 refactor
 
+tests
+
 pagination
 
 flip cards
@@ -16,7 +18,7 @@ banner
 
 responsiveness for mobile
 
-nicer hero animation, tilebars
+nicer cards
 
 Clone the repository and run
 
