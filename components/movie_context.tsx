@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import useSWR from "swr";
-import SearchResults from "./search_results";
 import Movie from "./movie";
 import {Box, Container, GridList} from "@material-ui/core/";
 import AppBar from "@material-ui/core/AppBar";
