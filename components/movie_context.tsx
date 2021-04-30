@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexShrink: 0,
         },
         drawerPaper: {
-            marginTop: "50px",
+            marginTop: "80px",
         },
         // necessary for content to be below app bar
         toolbar: theme.mixins.toolbar,
@@ -82,10 +82,21 @@ export function MovieProvider({children}) {
         <MovieContext.Provider value={{searchctx: [search, setSearch], nomctx: [nominations, setNominations]}}>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
-                    <SearchBar/>
+                    <SearchBar />
                     <h2>OMDB Search</h2>
                 </Toolbar>
+                {(nominations.length >= 5) ?
+                <Typography component="div" style={{ backgroundColor: 'rgba(237, 251, 255, 0.67)', backdropFilter: "blur(3px)", height: '7vh' ,width: '100%', zIndex: 50}} >
+                <Box textAlign="center" fontWeight="fontWeightBold" lineHeight={3.5}>
+                    You finished nominating 5 movies!
+                </Box>
+                    </Typography>
+                    :
+                    <></>}
+
             </AppBar>
+            
+      
 
             <Drawer
                 className={classes.drawer}
