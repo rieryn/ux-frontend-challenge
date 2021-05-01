@@ -16,11 +16,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 
 #### Thoughts
+
 Actual app is very straightforward
+
 Stuff I tried out:
+
 NextJS: Great! favorite framework now
+
 MaterialUI: limited, bloated makes testing awkward
+
 ContextProvider: not very useful here but yeah it's great  
+
 Enzyme: feels outdated compared to RTL
 
 #### todo:
