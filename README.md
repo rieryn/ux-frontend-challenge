@@ -27,7 +27,7 @@ MaterialUI: limited, bloated makes testing awkward
 
 ContextProvider: not very useful here but yeah it's great  
 
-Enzyme: feels outdated compared to RTL
+Enzyme: it's a whole thing, idk https://kentcdodds.com/blog/why-i-never-use-shallow-rendering
 
 #### todo:
 ```
